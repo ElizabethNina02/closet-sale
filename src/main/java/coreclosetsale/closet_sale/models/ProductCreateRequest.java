@@ -1,6 +1,7 @@
 package coreclosetsale.closet_sale.models;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import lombok.Data;
 
@@ -10,6 +11,7 @@ public class ProductCreateRequest {
     private BigDecimal precio;
     private ConditionProduct condicion;
     private StatusProduct estado;
+    private UUID categoriaId;
     private Long vendedorId;
     public String getTitulo() {
         return titulo;
@@ -24,5 +26,8 @@ public class ProductCreateRequest {
         return estado;
     } 
     
+    public UUID getCategoriaId() {
+        return categoriaId;
+    }
 
 }

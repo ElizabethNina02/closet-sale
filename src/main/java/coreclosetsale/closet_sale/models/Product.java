@@ -48,6 +48,10 @@ public class Product {
     @Column(name = "estado", nullable = false)
     private StatusProduct estado;
 
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "category_id", nullable = false) 
+    private Category categoriaId;
+
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
@@ -88,5 +92,7 @@ public class Product {
         this.vendedorId = vendedorId;
     }
 
-    
+    public void setCategoria(Category categoria) {
+        this.categoriaId = categoria;
+    }
 }

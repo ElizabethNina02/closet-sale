@@ -6,11 +6,14 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import coreclosetsale.closet_sale.models.Category;
 import coreclosetsale.closet_sale.models.Product;
 import coreclosetsale.closet_sale.models.ProductCreateRequest;
 import coreclosetsale.closet_sale.models.User;
+import coreclosetsale.closet_sale.repositories.CategoryRepository;
 import coreclosetsale.closet_sale.repositories.ProductRepository;
 import coreclosetsale.closet_sale.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 
@@ -19,10 +22,12 @@ public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
-    ProductServiceImpl(ProductRepository repository, UserRepository userRepository) {
+    ProductServiceImpl(ProductRepository repository, UserRepository userRepository, CategoryRepository categoryRepository) {
         this.productRepository = repository;
         this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -34,6 +39,9 @@ public class ProductServiceImpl implements ProductService{
         product.setPrecio(request.getPrecio());
         product.setCondicion(request.getCondicion());
         product.setEstado(request.getEstado());
+
+        Category category = categoryRepository.getReferenceById(request.getCategoriaId());
+        product.setCategoria(category);
 
         // 2. Vinculamos el Vendedor de forma óptima usando solo su ID
         // getReferenceById() crea un Proxy ligero con el ID, cumpliendo con la estructura orientada a objetos de JPA.
