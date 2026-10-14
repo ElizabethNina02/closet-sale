@@ -7,13 +7,16 @@ import org.springframework.stereotype.Service;
 
 import coreclosetsale.closet_sale.dto.AuthRequest;
 import coreclosetsale.closet_sale.dto.AuthResponse;
-import lombok.RequiredArgsConstructor;
 
 @Service 
-@RequiredArgsConstructor 
 public class AuthService {
      private final AuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
+
+    public AuthService(AuthenticationManager authenticationManager, JwtTokenService jwtTokenService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenService = jwtTokenService;
+    }
 
     public AuthResponse authenticate(AuthRequest authRequest) {
         var token = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());

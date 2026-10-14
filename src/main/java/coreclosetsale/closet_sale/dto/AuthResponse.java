@@ -1,14 +1,4 @@
 package coreclosetsale.closet_sale.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data 
-@NoArgsConstructor 
-@AllArgsConstructor 
-public class AuthResponse {
-    private String token;
-    private String username;
-    private Long expiresAt;
-}
+public record AuthResponse(String token, String username, Long expiresAt) {}

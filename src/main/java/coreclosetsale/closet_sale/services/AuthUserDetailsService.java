@@ -7,13 +7,15 @@ import org.springframework.stereotype.Service;
 
 import coreclosetsale.closet_sale.models.AuthUser;
 import coreclosetsale.closet_sale.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
 
 @Service 
-@RequiredArgsConstructor 
 public class AuthUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
+    public AuthUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
