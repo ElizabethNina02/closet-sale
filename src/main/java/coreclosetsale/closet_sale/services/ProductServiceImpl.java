@@ -13,7 +13,6 @@ import coreclosetsale.closet_sale.models.User;
 import coreclosetsale.closet_sale.repositories.CategoryRepository;
 import coreclosetsale.closet_sale.repositories.ProductRepository;
 import coreclosetsale.closet_sale.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 
