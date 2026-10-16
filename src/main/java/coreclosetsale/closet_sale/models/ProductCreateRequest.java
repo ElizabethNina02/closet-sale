@@ -6,11 +6,14 @@ import java.util.UUID;
 
 public class ProductCreateRequest {
     private String titulo;
+    private String descripcion;
     private BigDecimal precio;
     private ConditionProduct condicion;
     private StatusProduct estado;
     private UUID categoriaId;
     private Long vendedorId;
+    private ProductFileCreateRequest[] files; // Array de archivos asociados al producto
+
     public String getTitulo() {
         return titulo;
     }
@@ -48,5 +51,17 @@ public class ProductCreateRequest {
     public void setVendedorId(Long vendedorId) {
         this.vendedorId = vendedorId;
     }
-
+    
+    public String getDescripcion() {
+        return descripcion;
+    }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    public ProductFileCreateRequest[] getFiles() {
+        return files;
+    }
+    public void setFiles(ProductFileCreateRequest[] files) {
+        this.files = files;
+    }
 }

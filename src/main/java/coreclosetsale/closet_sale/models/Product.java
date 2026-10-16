@@ -1,8 +1,14 @@
 package coreclosetsale.closet_sale.models;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,6 +17,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity 
@@ -34,8 +41,11 @@ public class Product {
     @JoinColumn(name = "marca_id", nullable = false)
     private Marca marca;*/
 
-    @Column(name = "titulo", nullable = false, length = 255)
+    @Column(name = "titulo", nullable = false, length = 155)
     private String titulo;
+
+    @Column(name = "descripcion", nullable = false, length = 255)
+    private String descripcion;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "condicion", nullable = false)
@@ -51,6 +61,10 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY) 
     @JoinColumn(name = "category_id", nullable = false) 
     private Category categoriaId;
+
+    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Parte complementaria para serializar el JSON de forma limpia
+    private List<ProductFile> files;
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
@@ -95,4 +109,22 @@ public class Product {
     public void setCategoria(Category categoria) {
         this.categoriaId = categoria;
     }
+    
+
+    public List<ProductFile> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<ProductFile> files) {
+        this.files = files;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
 }

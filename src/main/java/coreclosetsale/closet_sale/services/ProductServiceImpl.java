@@ -1,5 +1,6 @@
 package coreclosetsale.closet_sale.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import coreclosetsale.closet_sale.models.Category;
 import coreclosetsale.closet_sale.models.Product;
 import coreclosetsale.closet_sale.models.ProductCreateRequest;
+import coreclosetsale.closet_sale.models.ProductFile;
+import coreclosetsale.closet_sale.models.ProductFileCreateRequest;
 import coreclosetsale.closet_sale.models.User;
 import coreclosetsale.closet_sale.repositories.CategoryRepository;
 import coreclosetsale.closet_sale.repositories.ProductRepository;
@@ -38,6 +41,7 @@ public class ProductServiceImpl implements ProductService{
         product.setPrecio(request.getPrecio());
         product.setCondicion(request.getCondicion());
         product.setEstado(request.getEstado());
+        product.setDescripcion(request.getDescripcion());
 
         Category category = categoryRepository.getReferenceById(request.getCategoriaId());
         product.setCategoria(category);
@@ -46,6 +50,20 @@ public class ProductServiceImpl implements ProductService{
         // getReferenceById() crea un Proxy ligero con el ID, cumpliendo con la estructura orientada a objetos de JPA.
         User vendedorProxy = userRepository.getReferenceById(request.getVendedorId());
         product.setVendedorId(vendedorProxy);
+
+        for (ProductFileCreateRequest fileRequest : request.getFiles() != null
+                ? request.getFiles()
+                : new ProductFileCreateRequest[0]) {
+            ProductFile productFile = new ProductFile();
+            productFile.setId(UUID.randomUUID());
+            productFile.setUrl(fileRequest.getUrl());
+            productFile.setFileOrder(fileRequest.getFileOrder());
+            productFile.setProductId(product);
+            if (product.getFiles() == null) {
+                product.setFiles(new ArrayList<>());
+            }
+            product.getFiles().add(productFile);
+        }
 
         // 3. Guardamos en SQL Server
         return productRepository.save(product);

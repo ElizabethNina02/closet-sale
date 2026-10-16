@@ -20,7 +20,7 @@ public class Category {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @OneToMany(mappedBy = "categoriaId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "categoriaId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 
     public UUID getId() {
