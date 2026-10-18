@@ -102,6 +102,10 @@ public class Product {
         this.id = id;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     public void setVendedorId(User vendedorId) {
         this.vendedorId = vendedorId;
     }
