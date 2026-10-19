@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import coreclosetsale.closet_sale.dto.ProductResponse;
 import coreclosetsale.closet_sale.models.Product;
 import coreclosetsale.closet_sale.models.ProductCreateRequest;
 import coreclosetsale.closet_sale.services.ProductService;
@@ -34,13 +35,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         return service.getAllProducts();
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable UUID id) {
-        Product product = service.getProductById(id);
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable UUID id) {
+        ProductResponse product = service.getProductById(id);
         if(product!=null){
             return ResponseEntity.ok(product);
         }else{

@@ -23,6 +23,11 @@ public class ProductFile {
     @Column(nullable = false)
     private String url;
 
+
+    @Column(nullable = false)
+    private String uniqueName;
+    
+
     @Column(name = "file_order", nullable = false) // 'order' es palabra reservada en SQL, mejor cambiar el nombre físico
     private int fileOrder;
 
@@ -62,5 +67,13 @@ public class ProductFile {
 
     public void setProductId(Product productId) {
         this.productId = productId;
+    }
+
+    public String getUniqueName() {
+        return uniqueName;
+    }
+
+    public void setUniqueName(String uniqueName) {
+        this.uniqueName = uniqueName;
     }
 }

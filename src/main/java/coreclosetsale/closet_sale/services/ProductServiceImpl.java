@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import coreclosetsale.closet_sale.dto.ProductFileResponse;
+import coreclosetsale.closet_sale.dto.ProductResponse;
 import coreclosetsale.closet_sale.models.Category;
 import coreclosetsale.closet_sale.models.Product;
 import coreclosetsale.closet_sale.models.ProductCreateRequest;
@@ -58,7 +60,10 @@ public class ProductServiceImpl implements ProductService{
             productFile.setId(UUID.randomUUID());
             productFile.setUrl(fileRequest.getUrl());
             productFile.setFileOrder(fileRequest.getFileOrder());
+            productFile.setUniqueName(fileRequest.getUniqueName());
             productFile.setProductId(product);
+
+            
             if (product.getFiles() == null) {
                 product.setFiles(new ArrayList<>());
             }
@@ -75,13 +80,47 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll().stream()
+             .map((Product product) -> new ProductResponse(
+            product.getId(),
+            product.getVendedorId() != null ? product.getVendedorId().getId() : null,
+            product.getTitulo(),
+            product.getDescripcion(),
+            product.getCondicion(),
+            product.getPrecio(),
+            product.getEstado(),
+            product.getCategoriaId() != null ? product.getCategoriaId().getId() : null,
+            product.getFiles() != null ? product.getFiles().stream()
+                .map((ProductFile file) -> new ProductFileResponse(
+                    file.getId(),
+                    file.getUrl(),
+                    file.getFileOrder(),
+                    file.getUniqueName()
+                )).toList() : List.of()
+        ))
+        .toList();
     }
 
     @Override
-    public Product getProductById(UUID id) {
-        return productRepository.findById(id).orElse(null);
+    public ProductResponse getProductById(UUID id) {
+        return productRepository.findById(id).map((Product product) -> new ProductResponse(
+            product.getId(),
+            product.getVendedorId() != null ? product.getVendedorId().getId() : null,
+            product.getTitulo(),
+            product.getDescripcion(),
+            product.getCondicion(),
+            product.getPrecio(),
+            product.getEstado(),
+            product.getCategoriaId() != null ? product.getCategoriaId().getId() : null,
+            product.getFiles() != null ? product.getFiles().stream()
+                .map((ProductFile file) -> new ProductFileResponse(
+                    file.getId(),
+                    file.getUrl(),
+                    file.getFileOrder(),
+                    file.getUniqueName()
+                )).toList() : List.of()
+        )).orElse(null);
     }
 
     @Override

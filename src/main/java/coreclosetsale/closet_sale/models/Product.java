@@ -41,6 +41,10 @@ public class Product {
     @JoinColumn(name = "marca_id", nullable = false)
     private Marca marca;*/
 
+    public User getVendedorId() {
+        return vendedorId;
+    }
+
     @Column(name = "titulo", nullable = false, length = 155)
     private String titulo;
 
@@ -131,4 +135,7 @@ public class Product {
         this.descripcion = descripcion;
     }
 
+    public Category getCategoriaId() {
+        return categoriaId;
+    }
 }
