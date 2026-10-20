@@ -124,14 +124,45 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product updateProduct(UUID id, Product product) {
+    public Product updateProduct(UUID id, ProductCreateRequest product) {
         Optional<Product> existingProduct = productRepository.findById(id);
         if(existingProduct.isPresent()){
             Product updatedProduct = existingProduct.get();
+            updatedProduct.setDescripcion(product.getDescripcion());
             updatedProduct.setCondicion(product.getCondicion());
             updatedProduct.setEstado(product.getEstado());
             updatedProduct.setPrecio(product.getPrecio());
             updatedProduct.setTitulo(product.getTitulo());
+            Category category = categoryRepository.getReferenceById(product.getCategoriaId());
+            updatedProduct.setCategoria(category);
+
+            // Si la lista de archivos actual está vacía o nula, inicializarla
+            if (updatedProduct.getFiles() == null) {
+                updatedProduct.setFiles(new ArrayList<>());
+            } else {
+                // Limpiamos los archivos existentes para reemplazarlos con los nuevos
+                updatedProduct.getFiles().clear(); 
+            }
+
+            // Usamos la misma validación ternaria que tienes en tu método create
+            for (ProductFileCreateRequest fileRequest : product.getFiles() != null
+                    ? product.getFiles()
+                    : new ProductFileCreateRequest[0]) {
+                
+                ProductFile productFile = new ProductFile();
+                // Generamos un nuevo UUID para los archivos entrantes
+                productFile.setId(UUID.randomUUID());
+                productFile.setUrl(fileRequest.getUrl());
+                productFile.setFileOrder(fileRequest.getFileOrder());
+                productFile.setUniqueName(fileRequest.getUniqueName());
+                
+                // 👈 Usamos tu método asignando el objeto updatedProduct completo
+                productFile.setProductId(updatedProduct); 
+
+                // Agregamos el archivo mapeado a la lista del producto que se va a guardar
+                updatedProduct.getFiles().add(productFile);
+            }
+            
             return productRepository.save(updatedProduct);
         }
         return null;

@@ -76,4 +76,5 @@ public class ProductFile {
     public void setUniqueName(String uniqueName) {
         this.uniqueName = uniqueName;
     }
+
 }
