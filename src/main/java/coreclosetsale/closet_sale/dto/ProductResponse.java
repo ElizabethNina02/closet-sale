@@ -9,7 +9,7 @@ import coreclosetsale.closet_sale.models.StatusProduct;
 
 public record ProductResponse(
     UUID id,
-    Long vendedorId,      // Asumiendo que el User también usa UUID
+    UUID vendedorId,      // Asumiendo que el User también usa UUID
     String titulo,
     String descripcion,
     ConditionProduct condicion,

@@ -1,21 +1,39 @@
 package coreclosetsale.closet_sale.models;
+import java.util.UUID;
+
+import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
+
 import jakarta.persistence.*;
 
 @Entity 
 @Table(name = "users")
 public class User {
+ 
+    @Id 
+    @Column(name="id", updatable = false, nullable = false,columnDefinition = "UNIQUEIDENTIFIER")
+    private UUID id;
+    
+    private String firstName;
 
-    @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String lastName;
+
+   @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false)
     private String password;
-    private String firstname;
-    private String lastname;
-    public Long getId() {
+
+    // Crucial para armar el link directo de WhatsApp
+    @Column(nullable = false)
+    private String whatsappNumber; 
+
+    public UUID getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
     public String getUsername() {
@@ -31,15 +49,39 @@ public class User {
         this.password = password;
     }
     public String getFirstname() {
-        return firstname;
+        return firstName;
     }
     public void setFirstname(String firstname) {
-        this.firstname = firstname;
+        this.firstName = firstname;
     }
     public String getLastname() {
-        return lastname;
+        return lastName;
     }
     public void setLastname(String lastname) {
-        this.lastname = lastname;
+        this.lastName = lastname;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public String getWhatsappNumber() {
+        return whatsappNumber;
+    }
+    public void setWhatsappNumber(String whatsappNumber) {
+        this.whatsappNumber = whatsappNumber;
     }
 }

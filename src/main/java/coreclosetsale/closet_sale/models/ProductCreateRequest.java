@@ -11,7 +11,7 @@ public class ProductCreateRequest {
     private ConditionProduct condicion;
     private StatusProduct estado;
     private UUID categoriaId;
-    private Long vendedorId;
+    private UUID vendedorId;
     private ProductFileCreateRequest[] files; // Array de archivos asociados al producto
 
     public String getTitulo() {
@@ -45,10 +45,10 @@ public class ProductCreateRequest {
     public void setCategoriaId(UUID categoriaId) {
         this.categoriaId = categoriaId;
     }
-    public Long getVendedorId() {
+    public UUID getVendedorId() {
         return vendedorId;
     }
-    public void setVendedorId(Long vendedorId) {
+    public void setVendedorId(UUID vendedorId) {
         this.vendedorId = vendedorId;
     }
     
