@@ -1,7 +1,6 @@
 package coreclosetsale.closet_sale.models;
 import java.util.UUID;
 
-import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 
 import jakarta.persistence.*;
 
@@ -16,6 +15,10 @@ public class User {
     private String firstName;
 
     private String lastName;
+    
+    private String uniqueNameImage;
+
+    private String urlImage;
 
    @Column(unique = true, nullable = false)
     private String username;
@@ -83,5 +86,17 @@ public class User {
     }
     public void setWhatsappNumber(String whatsappNumber) {
         this.whatsappNumber = whatsappNumber;
+    }
+    public String getUniqueNameImage() {
+        return uniqueNameImage;
+    }
+    public void setUniqueNameImage(String uniqueNameImage) {
+        this.uniqueNameImage = uniqueNameImage;
+    }
+    public String getUrlImage() {
+        return urlImage;
+    }
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 }

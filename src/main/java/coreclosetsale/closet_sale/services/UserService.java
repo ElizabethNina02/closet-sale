@@ -48,6 +48,8 @@ public class UserService {
         user.setFirstname(registerRequest.firstName());
         user.setWhatsappNumber(registerRequest.whatsappNumber());
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
+        user.setUrlImage(registerRequest.urlImage());
+        user.setUniqueNameImage(registerRequest.uniqueNameImage());
         
         // Guardamos la contraseña plana temporalmente para autenticar más abajo
         String rawPassword = registerRequest.password(); 
@@ -62,7 +64,9 @@ public class UserService {
             savedUser.getEmail(), 
             savedUser.getFirstname(), // O getFirstname() según tu entidad
             savedUser.getLastname(), 
-            savedUser.getWhatsappNumber()
+            savedUser.getWhatsappNumber(),
+            savedUser.getUrlImage(),
+            savedUser.getUniqueNameImage()
         );
 
         // 4. Autenticar AUTOMÁTICAMENTE al usuario recién creado
@@ -87,7 +91,9 @@ public class UserService {
             user.getEmail(), 
             user.getFirstname(), // Asegúrate de que coincida con el nombre en tu entidad (ej. firstname o firstName)
             user.getLastname(),
-            user.getWhatsappNumber()
+            user.getWhatsappNumber(),
+            user.getUrlImage(),
+            user.getUniqueNameImage()
         ))
         .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con el ID: " + id));
 }
