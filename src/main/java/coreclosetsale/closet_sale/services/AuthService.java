@@ -7,18 +7,25 @@ import org.springframework.stereotype.Service;
 
 import coreclosetsale.closet_sale.dto.AuthRequest;
 import coreclosetsale.closet_sale.dto.AuthResponse;
+import coreclosetsale.closet_sale.dto.RegisterResponse;
+import coreclosetsale.closet_sale.dto.UserResponse;
+import coreclosetsale.closet_sale.models.User;
+import coreclosetsale.closet_sale.repositories.UserRepository;
 
 @Service 
 public class AuthService {
-     private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
+    
+    private final UserRepository userRepository;
 
-    public AuthService(AuthenticationManager authenticationManager, JwtTokenService jwtTokenService) {
+    public AuthService(AuthenticationManager authenticationManager, JwtTokenService jwtTokenService, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenService = jwtTokenService;
+        this.userRepository = userRepository;
     }
 
-    public AuthResponse authenticate(AuthRequest authRequest) {
+    public RegisterResponse authenticate(AuthRequest authRequest) {
         // 1. Acceso moderno usando los métodos nativos del Record (sin "get")
         var token = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
         
@@ -29,8 +36,26 @@ public class AuthService {
         String jwtToken = jwtTokenService.generateToken(authentication);
         Long expiresAt = jwtTokenService.extractExpirationTime(jwtToken);
 
-        // 4. Retorno usando el constructor posicional del Record AuthResponse
-        return new AuthResponse(jwtToken, authentication.getName(), expiresAt);
+
+        var authResponse = new AuthResponse(jwtToken, authentication.getName(), expiresAt);
+
+        // 1. Extraemos la entidad User pura de la base de datos
+        User user = userRepository.findByUsername(authRequest.getUsername()).get();
+        
+        // 2. 🚨 CONVERSIÓN CLAVE: Creamos el UserResponse usando los datos de la entidad User
+        // (Ajusta los parámetros según lo que pida el constructor de tu UserResponse)
+        var userResponse = new UserResponse(
+            user.getId(), 
+            user.getUsername(),
+            user.getEmail(),
+            user.getFirstName(), 
+            user.getLastName(), 
+            user.getWhatsappNumber(), 
+            user.getUrlImage(), 
+            user.getUniqueNameImage()
+        );
+         // 4. Retorno usando el constructor posicional del Record AuthResponse
+        return new RegisterResponse(userResponse, authResponse);
     }
 
 }

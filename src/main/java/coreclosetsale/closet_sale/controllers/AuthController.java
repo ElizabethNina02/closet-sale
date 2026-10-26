@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import coreclosetsale.closet_sale.dto.AuthRequest;
 import coreclosetsale.closet_sale.dto.AuthResponse;
+import coreclosetsale.closet_sale.dto.RegisterResponse;
 import coreclosetsale.closet_sale.services.AuthService;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("/token")
-    public AuthResponse login(@RequestBody AuthRequest authRequest) {
+    public RegisterResponse login(@RequestBody AuthRequest authRequest) {
         return authService.authenticate(authRequest);
     }
 }
