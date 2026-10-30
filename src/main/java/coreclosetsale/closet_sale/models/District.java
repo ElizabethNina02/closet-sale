@@ -18,8 +18,8 @@ public class District {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "department_id", nullable = false)
-    private Integer departmentId;
+    @Column(name = "province_id", nullable = false)
+    private Integer provinceId;
 
     public Integer getId() {
         return id;
@@ -37,13 +37,14 @@ public class District {
         this.name = name;
     }
 
-    public Integer getDepartmentId() {
-        return departmentId;
+    public Integer getProvinceId() {
+        return provinceId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
+    public void setProvinceId(Integer provinceId) {
+        this.provinceId = provinceId;
     }
 
+    
     
 }

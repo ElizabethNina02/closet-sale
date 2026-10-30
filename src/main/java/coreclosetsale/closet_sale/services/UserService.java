@@ -1,5 +1,6 @@
 package coreclosetsale.closet_sale.services;
 
+import coreclosetsale.closet_sale.repositories.DepartmentRepository;
 import java.util.UUID;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,10 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import coreclosetsale.closet_sale.dto.AuthResponse;
+import coreclosetsale.closet_sale.dto.DistrictDetail;
 import coreclosetsale.closet_sale.dto.RegisterRequest;
 import coreclosetsale.closet_sale.dto.RegisterResponse;
 import coreclosetsale.closet_sale.dto.UserResponse;
+import coreclosetsale.closet_sale.models.District;
 import coreclosetsale.closet_sale.models.User;
+import coreclosetsale.closet_sale.repositories.DistrictRepository;
+import coreclosetsale.closet_sale.repositories.ProvinceRepository;
 import coreclosetsale.closet_sale.repositories.UserRepository;
 
 @Service 
@@ -23,13 +28,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenService jwtTokenService;
+    private final DistrictRepository districtRepository;
 
     // Inyección de dependencias por constructor
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,AuthenticationManager authenticationManager, JwtTokenService jwtTokenService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,AuthenticationManager authenticationManager, JwtTokenService jwtTokenService, DistrictRepository districtRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenService = jwtTokenService;
+        this.districtRepository = districtRepository;
     }
 
     @Transactional 
@@ -50,13 +57,20 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
         user.setUrlImage(registerRequest.urlImage());
         user.setUniqueNameImage(registerRequest.uniqueNameImage());
-        
+
+
+        District miDistrito = districtRepository.getReferenceById(registerRequest.districtId());
+        user.setDistrict(miDistrito);
+
         // Guardamos la contraseña plana temporalmente para autenticar más abajo
         String rawPassword = registerRequest.password(); 
         user.setPassword(passwordEncoder.encode(rawPassword));
 
         User savedUser = userRepository.save(user);
 
+        
+        DistrictDetail detail = districtRepository.getDistrictDetail(user.getDistrict().getId());
+        
         // 3. Mapear la respuesta del usuario (UserResponse)
         var userResponse = new UserResponse(
             savedUser.getId(), 
@@ -66,7 +80,10 @@ public class UserService {
             savedUser.getLastname(), 
             savedUser.getWhatsappNumber(),
             savedUser.getUrlImage(),
-            savedUser.getUniqueNameImage()
+            savedUser.getUniqueNameImage(),
+            detail.districtName(),
+            detail.provinceName(),
+            detail.departmentName()
         );
 
         // 4. Autenticar AUTOMÁTICAMENTE al usuario recién creado
@@ -84,17 +101,23 @@ public class UserService {
     }
 
     public UserResponse findById(UUID id) {
-    return userRepository.findById(id)
-        .map(user -> new UserResponse(
-            user.getId(), 
-            user.getUsername(), 
-            user.getEmail(), 
-            user.getFirstname(), // Asegúrate de que coincida con el nombre en tu entidad (ej. firstname o firstName)
-            user.getLastname(),
-            user.getWhatsappNumber(),
-            user.getUrlImage(),
-            user.getUniqueNameImage()
-        ))
-        .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con el ID: " + id));
-}
+
+        User savedUser = userRepository.findById(id).get();
+        DistrictDetail detail = districtRepository.getDistrictDetail(savedUser.getDistrict().getId());
+            
+
+        return new UserResponse(
+            savedUser.getId(),
+            savedUser.getUsername(),
+            savedUser.getEmail(),
+            savedUser.getFirstName(),
+            savedUser.getLastName(),
+            savedUser.getWhatsappNumber(),
+            savedUser.getUrlImage(),
+            savedUser.getUniqueNameImage(),
+            detail.districtName(),
+            detail.provinceName(),
+            detail.departmentName()
+        );
+    }
 }

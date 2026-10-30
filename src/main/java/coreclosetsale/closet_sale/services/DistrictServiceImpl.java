@@ -1,13 +1,10 @@
 package coreclosetsale.closet_sale.services;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import coreclosetsale.closet_sale.models.District;
-import coreclosetsale.closet_sale.repositories.DepartmentRepository;
 import coreclosetsale.closet_sale.repositories.DistrictRepository;
 
 @Service 
@@ -20,7 +17,7 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
 	@Override
-	public List<District> getDistrictsByDepartmentId(Integer departmentId) {
-		return districtRepository.findByDepartmentId(departmentId);
+	public List<District> getDistrictsByProvinceId(Integer provinceId) {
+		return districtRepository.findByProvinceId(provinceId);
 	}
 }

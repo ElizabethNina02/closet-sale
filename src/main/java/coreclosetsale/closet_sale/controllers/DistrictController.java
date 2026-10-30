@@ -26,7 +26,7 @@ public class DistrictController {
 
     
     @GetMapping("/{id}")
-    public List<District> getDistrictsByDepartmentId(@PathVariable("id") Integer id) {
-        return service.getDistrictsByDepartmentId(id);
+    public List<District> getDistrictsByProvinceId(@PathVariable Integer id) {
+        return service.getDistrictsByProvinceId(id);
     }
 }

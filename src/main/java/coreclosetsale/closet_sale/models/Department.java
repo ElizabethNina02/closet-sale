@@ -27,7 +27,7 @@ public class Department {
 
     
     @OneToMany(mappedBy = "departmentId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<District> districts;
+    private List<Province> provinces;
 
 
     public Integer getId() {
@@ -60,14 +60,15 @@ public class Department {
     }
 
 
-    public List<District> getDistricts() {
-        return districts;
+    public List<Province> getProvinces() {
+        return provinces;
     }
 
 
-    public void setDistricts(List<District> districts) {
-        this.districts = districts;
+    public void setProvinces(List<Province> provinces) {
+        this.provinces = provinces;
     }
+
 
     
 }

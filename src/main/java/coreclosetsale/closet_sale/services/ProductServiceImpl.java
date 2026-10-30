@@ -7,8 +7,10 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import coreclosetsale.closet_sale.dto.DistrictDetail;
 import coreclosetsale.closet_sale.dto.ProductFileResponse;
 import coreclosetsale.closet_sale.dto.ProductResponse;
+import coreclosetsale.closet_sale.dto.ProductUserDetailResponse;
 import coreclosetsale.closet_sale.models.Category;
 import coreclosetsale.closet_sale.models.Product;
 import coreclosetsale.closet_sale.models.ProductCreateRequest;
@@ -16,6 +18,7 @@ import coreclosetsale.closet_sale.models.ProductFile;
 import coreclosetsale.closet_sale.models.ProductFileCreateRequest;
 import coreclosetsale.closet_sale.models.User;
 import coreclosetsale.closet_sale.repositories.CategoryRepository;
+import coreclosetsale.closet_sale.repositories.DistrictRepository;
 import coreclosetsale.closet_sale.repositories.ProductRepository;
 import coreclosetsale.closet_sale.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -27,11 +30,13 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final DistrictRepository districtRepository;
 
-    ProductServiceImpl(ProductRepository repository, UserRepository userRepository, CategoryRepository categoryRepository) {
+    ProductServiceImpl(ProductRepository repository, UserRepository userRepository, CategoryRepository categoryRepository, DistrictRepository districtRepository) {
         this.productRepository = repository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
+        this.districtRepository = districtRepository;
     }
 
     @Override
@@ -103,8 +108,14 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductResponse getProductById(UUID id) {
-        return productRepository.findById(id).map((Product product) -> new ProductResponse(
+    public ProductUserDetailResponse getProductById(UUID id) {
+
+        Product product = productRepository.findById(id).get();
+        DistrictDetail detaill = districtRepository.getDistrictDetail(product.getVendedorId().getDistrict().getId());
+
+
+        return new ProductUserDetailResponse(
+          new ProductResponse(
             product.getId(),
             product.getVendedorId() != null ? product.getVendedorId().getId() : null,
             product.getTitulo(),
@@ -120,7 +131,15 @@ public class ProductServiceImpl implements ProductService{
                     file.getFileOrder(),
                     file.getUniqueName()
                 )).toList() : List.of()
-        )).orElse(null);
+            ),
+            product.getVendedorId().getFirstName(),
+            product.getVendedorId().getLastName(),
+            product.getVendedorId().getUrlImage(),
+            detaill.districtName(),
+            detaill.provinceName(),
+            detaill.departmentName(),
+            product.getVendedorId().getWhatsappNumber()
+        );
     }
 
     @Override

@@ -33,6 +33,10 @@ public class User {
     @Column(nullable = false)
     private String whatsappNumber; 
 
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "district_id", nullable = false) 
+    private District district;
+
     public UUID getId() {
         return id;
     }
@@ -99,4 +103,12 @@ public class User {
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
     }
+    public District getDistrict() {
+        return district;
+    }
+    public void setDistrict(District district) {
+        this.district = district;
+    }
+
+    
 }
