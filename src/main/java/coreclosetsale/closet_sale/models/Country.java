@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 @Table (name = "countries")
 public class Country {
     @Id 
-    @Column(name="id", updatable = false, nullable = false,columnDefinition = "UNIQUEIDENTIFIER")
+    @Column(name="id", updatable = false, nullable = false,columnDefinition = "uuid")
     private UUID id;
 
     

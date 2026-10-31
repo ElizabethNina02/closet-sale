@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 public class ProductFile {
 
     @Id 
-    @Column(name="id", updatable = false, nullable = false,columnDefinition = "UNIQUEIDENTIFIER")
+    @Column(name="id", updatable = false, nullable = false,columnDefinition = "uuid")
     private UUID id; 
 
     @Column(nullable = false)

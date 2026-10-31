@@ -24,7 +24,7 @@ import jakarta.persistence.Table;
 @Table (name = "products")
 public class Product {
     @Id 
-    @Column(name="id", updatable = false, nullable = false,columnDefinition = "UNIQUEIDENTIFIER")
+    @Column(name="id", updatable = false, nullable = false,columnDefinition = "uuid")
     private UUID id; 
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class User {
  
     @Id 
-    @Column(name="id", updatable = false, nullable = false,columnDefinition = "UNIQUEIDENTIFIER")
+    @Column(name="id", updatable = false, nullable = false,columnDefinition = "uuid")
     private UUID id;
     
     private String firstName;
