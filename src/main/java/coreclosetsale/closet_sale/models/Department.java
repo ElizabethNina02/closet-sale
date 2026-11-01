@@ -23,7 +23,7 @@ public class Department {
 
     
     @Column(name = "country_Id", nullable = false, length = 100)
-    private UUID countryId;
+    private Integer countryId;
 
     
     @OneToMany(mappedBy = "departmentId", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -50,12 +50,12 @@ public class Department {
     }
 
 
-    public UUID getCountryId() {
+    public Integer getCountryId() {
         return countryId;
     }
 
 
-    public void setCountryId(UUID countryId) {
+    public void setCountryId(Integer countryId) {
         this.countryId = countryId;
     }
 

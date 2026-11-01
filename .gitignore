@@ -14,6 +14,8 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
+.env
+application-local.properties
 .idea
 *.iws
 *.iml

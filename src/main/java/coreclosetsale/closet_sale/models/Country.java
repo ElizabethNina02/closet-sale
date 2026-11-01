@@ -14,8 +14,8 @@ import jakarta.persistence.Table;
 @Table (name = "countries")
 public class Country {
     @Id 
-    @Column(name="id", updatable = false, nullable = false,columnDefinition = "uuid")
-    private UUID id;
+    @Column(name="id", updatable = false, nullable = false)
+    private Integer id;
 
     
     @Column(name = "name", nullable = false, length = 100)
@@ -28,11 +28,11 @@ public class Country {
     @OneToMany(mappedBy = "countryId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Department> departments;
 
-    public UUID getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
